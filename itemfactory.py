@@ -11,8 +11,8 @@ class ItemFactory:
 
 		for index, column in enumerate(self.header):
 			if values == None:
-				setattr(item, column, None)
+				item.setAttribute(column, None)
 			else:
-				setattr(item, column, values[index])
+				item.setAttribute(column, values[index])
 
 		return item

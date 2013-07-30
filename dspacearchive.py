@@ -3,11 +3,9 @@ from itemfactory import ItemFactory
 from shutil import copy
 
 class DspaceArchive:
-	items = []
-	input_path = None
-	input_base_path = "."
 
 	def __init__(self, input_path):
+		self.items = []
 		self.input_path = input_path
 		self.input_base_path = os.path.dirname(input_path)
 
