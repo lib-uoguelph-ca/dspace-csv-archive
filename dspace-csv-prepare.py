@@ -1,21 +1,14 @@
-import sys, csv
-from itemfactory import ItemFactory
+import os, sys
+
+from dspacearchive import DspaceArchive
 
 if len(sys.argv) != 2:
-	print "Usage: ./dspcae-csv-prepare input-file.csv"
+	print "Usage: ./dspcae-csv-prepare ./input/input-file.csv"
 	sys.exit()
 
-with open('test.csv', 'rb') as f:
-    reader = csv.reader(f)
+input_file = sys.argv[1]
+input_base_path = os.path.dirname(input_file)
 
-    header = reader.next()
-    print "Header Row: "
-    print header
+archive = DspaceArchive(input_file)
+archive.write("./output")
 
-    item_factory = ItemFactory(header)
-
-
-    print "Body: "
-    for row in reader:
-        item = item_factory.newItem(row)
-        print item

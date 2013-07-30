@@ -2,3 +2,5 @@
 *.sublime-project
 test.csv
 *.pyc
+input
+output
