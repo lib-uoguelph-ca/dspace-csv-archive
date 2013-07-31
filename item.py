@@ -4,7 +4,7 @@ A representation of an item in DSpace.
 An item has a collection of files (aka Bitstreams) and a number of metadata name value pairs. 
 """
 
-import os, cgi
+import os, cgi, re
 
 class Item:
 	def __init__(self):
@@ -62,11 +62,14 @@ class Item:
 			values.append(file)
 		return values
 
+	"""
+	Returns an XML represenatation of the item.
+	"""
 	def toXML(self):
 		output = ""
 		output += "<dublin_core>" + os.linesep
 		for index, value in self.getAttributes().iteritems():
-			tag_open = self.getOpenTag(index)
+			tag_open = self.getOpenAttributeTag(index)
 			tag_close = "</dcvalue>" + os.linesep
 
 			values = value.split(';')
@@ -79,18 +82,59 @@ class Item:
 
 		return output
 
-	def getOpenTag(self, attribute):
-		attribs = attribute.split('.')
+	"""
+	Get the opening XML tag for a metadata attribute.
+	"""
+	def getOpenAttributeTag(self, attribute):
+		lang = self.getAttributeLangString(attribute)
+		element = self.getAttributeElementString(attribute)
+		qualifier = self.getAttributeQualifierString(attribute)
 
-		tag_open = ""
-
-		if len(attribs) == 3:
-			element = attribs[1]
-			qualifier = attribs[2]
-			tag_open = '<dcvalue element="%s" qualifier="%s">' % (cgi.escape(element, quote=True), cgi.escape(qualifier, quote=True)) 
-			
-		elif len(attribs) == 2:
-			element = attribs[1]
-			tag_open = '<dcvalue element="%s">' % (cgi.escape(element, quote=True)) 
+		tag_open = '<dcvalue%s%s%s>' % (element, qualifier, lang) 
 
 		return tag_open
+
+	"""
+	Get a string the key value pair for the lang attribute.
+	eg 'language="en"'
+	"""
+	def getAttributeLangString(self, attribute):
+		match = re.search('_(\w+)', attribute)
+
+		if match != None:
+			return ' language="' + cgi.escape(match.group(1), quote=True) + '" '
+		else:
+			return ''
+
+	"""
+	Strip the language bit off of a metadata attribute.
+	"""
+	def stripAttributeLang(self, attribute):
+		attribs = attribute.split('_')
+		return attribs[0]
+
+	"""
+	Get a string the key value pair for the element attribute.
+	eg 'element="contributor"'
+	"""
+	def getAttributeElementString(self, attribute):
+		attribute = self.stripAttributeLang(attribute)
+		attribs = attribute.split('.')
+
+		if len(attribs) >= 2:
+			return ' element="' + cgi.escape(attribs[1], quote=True) + '" '
+		else:
+			return ''
+
+	"""
+	Get a string the key value pair for the qualifier attribute.
+	eg 'qualifier="author"'
+	"""
+	def getAttributeQualifierString(self, attribute):
+		attribute = self.stripAttributeLang(attribute)
+		attribs = attribute.split('.')
+
+		if len(attribs) >= 3:
+			return ' qualifier="' + cgi.escape(attribs[2], quote=True) + '" '
+		else:
+			return ''
