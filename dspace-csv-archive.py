@@ -1,9 +1,11 @@
+#!/usr/bin/python
+
 import os, sys
 
 from dspacearchive import DspaceArchive
 
 if len(sys.argv) != 2:
-	print "Usage: ./dspcae-csv-prepare ./input/input-file.csv"
+	print "Usage: ./dspcae-csv-prepare /path/to/input/file.csv"
 	sys.exit()
 
 input_file = sys.argv[1]
