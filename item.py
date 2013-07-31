@@ -4,11 +4,12 @@ A representation of an item in DSpace.
 An item has a collection of files (aka Bitstreams) and a number of metadata name value pairs. 
 """
 
-import os
+import os, cgi
 
 class Item:
 	def __init__(self):
 		self._attributes = {}
+		self.files = ""
 
 	"""
 	Get a dict of all attributes.
@@ -20,7 +21,10 @@ class Item:
 	Set an attribute value.
 	"""
 	def setAttribute(self, attribute, value):
-		self._attributes[attribute] = value
+		if attribute == "files":
+			self.files = value
+		else:
+			self._attributes[attribute] = value
 
 	"""
 	Get an attribute value. 
@@ -40,7 +44,7 @@ class Item:
 	"""
 	def getFiles(self):
 		values = []
-		files = self.getAttribute('files').split(',')
+		files = self.files.split(',')
 		for index, file_name in enumerate(files):
 			file = os.path.basename(file_name).strip()
 			values.append(file)
@@ -52,8 +56,41 @@ class Item:
 	"""
 	def getFilePaths(self):
 		values = []
-		files = self.getAttribute('files').split(',')
+		files = self.files.split(';')
 		for index, file_name in enumerate(files):
 			file = file_name.strip()
 			values.append(file)
 		return values
+
+	def toXML(self):
+		output = ""
+		output += "<dublin_core>" + os.linesep
+		for index, value in self.getAttributes().iteritems():
+			tag_open = self.getOpenTag(index)
+			tag_close = "</dcvalue>" + os.linesep
+
+			values = value.split(';')
+
+			for val in values:
+				output += tag_open
+				output += cgi.escape(val.strip(), quote=True)
+				output += tag_close
+		output += "</dublin_core>" + os.linesep
+
+		return output
+
+	def getOpenTag(self, attribute):
+		attribs = attribute.split('.')
+
+		tag_open = ""
+
+		if len(attribs) == 3:
+			element = attribs[1]
+			qualifier = attribs[2]
+			tag_open = '<dcvalue element="%s" qualifier="%s">' % (cgi.escape(element, quote=True), cgi.escape(qualifier, quote=True)) 
+			
+		elif len(attribs) == 2:
+			element = attribs[1]
+			tag_open = '<dcvalue element="%s">' % (cgi.escape(element, quote=True)) 
+
+		return tag_open

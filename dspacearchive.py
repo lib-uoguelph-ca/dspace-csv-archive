@@ -63,7 +63,10 @@ class DspaceArchive:
 			self.writeContentsFile(item, item_path)
 
 			#content files (aka bitstreams)
-			self.copyFiles(item, item_path);
+			self.copyFiles(item, item_path)
+
+			#Metadata file
+			self.writeMetadata(item, item_path)
 
 	"""
 	Create a zip file of the archive. 
@@ -99,3 +102,10 @@ class DspaceArchive:
 		files = item.getFilePaths()
 		for index, file_name in enumerate(files):
 			copy(os.path.join(self.input_base_path, file_name), item_path)
+
+	def writeMetadata(self, item, item_path):
+		xml = item.toXML()
+
+		metadata_file = open(os.path.join(item_path, 'dublin_core.xml'), "w")
+		metadata_file.write(xml)
+		metadata_file.close()
