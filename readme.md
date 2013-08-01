@@ -40,4 +40,4 @@ An Example:
 
 Usage 
 -----
-	./dspace-csv-archive /path/to/input/file.csv
+	./dspace-csv-archive.py /path/to/input/file.csv
