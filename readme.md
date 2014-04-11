@@ -39,7 +39,6 @@ An Example:
 </table>
 
 Usage 
------
 	./dspace-csv-archive /path/to/input/file.csv
 
 Importing into DSPace
