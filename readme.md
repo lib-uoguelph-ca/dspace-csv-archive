@@ -58,7 +58,7 @@ to run this command as the `dspace` user. Something like
     [dspace]/bin/import --add --eperson=[importer's email address] --collection=[collection handle] --source=[directory-name] --mapfile=[directory-name]/mapfile
 
 will add the items in the directory to the requested collection. Please refer
-to the [DSpace documentation](http://www.dspace.org/1_6_0Documentation/ch08.html#N1584C)
+to the [DSpace documentation](https://wiki.duraspace.org/display/DSDOC18/Importing+and+Exporting+Items+via+Simple+Archive+Format)
 for more information about the DSpace Simple Archive Format or the
 import/export commands.
 
