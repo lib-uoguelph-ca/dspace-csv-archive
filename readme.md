@@ -41,7 +41,7 @@ An Example:
 Usage 
 	./dspace-csv-archive /path/to/input/file.csv
 
-Importing into DSPace
+Importing into DSpace
 ---------------------
 If it is not already, the directory should be placed in a location that the
 `dspace` user can access it *and write to the directory*. I recommend putting
