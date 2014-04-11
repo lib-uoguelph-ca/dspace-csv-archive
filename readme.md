@@ -55,7 +55,7 @@ imported data. One way to do this is
 Now we are ready to use the `import` command that comes with DSpace. Be sure
 to run this command as the `dspace` user. Something like
 
-    [dspace]/bin/import --add --eperson=[importer's email address] --collection=[collection handle] --source=[directory-name] --mapfile=[directory-name]/mapfile
+    [dspace]/bin/dspace import --add --eperson=[importer's email address] --collection=[collection handle] --source=[directory-name] --mapfile=[directory-name]/mapfile
 
 will add the items in the directory to the requested collection. Please refer
 to the [DSpace documentation](https://wiki.duraspace.org/display/DSDOC18/Importing+and+Exporting+Items+via+Simple+Archive+Format)
