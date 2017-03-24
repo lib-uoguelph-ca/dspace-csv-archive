@@ -5,12 +5,12 @@ Takes a simple CSV spreadsheet, and a bunch of files and magically turns them in
 Some simple rules: 
 -------------------
 * The first row should be your header, which defines the values you're going to provide. 
-* Only one column is manditory: 'files'. Files can be organized in any way you want, just provide the proper path!
+* Only one column is mandatory: 'files'. Files can be organized in any way you want, just provide the proper path relative to the CSV file's location.
 * Add one column for each metadata element (eg: dc.title)
-* Only dublin core is supported (for now).
+* Only dublin core metadata elements are supported (for now).
 * Languages can be specified by leaving a space after the element name and then listing the language.
 * Separate multiple values for an element by semi-colons (;)
-* If your metadata value has a comma in it, throw some quotes around it! Eg: "This title, which I made up, has commas"
+* If your metadata value has a comma in it, put some quotes around it. Eg: "Roses are red, violets are blue"
 
 An Example: 
 -----------
