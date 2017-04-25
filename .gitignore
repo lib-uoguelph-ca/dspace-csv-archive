@@ -4,3 +4,4 @@ test.csv
 *.pyc
 input
 output
+.idea
