@@ -77,6 +77,9 @@ class Item:
             values = value.split(';')
 
             for val in values:
+                if not val:
+                    continue
+
                 output += tag_open
                 output += html.escape(val.strip(), quote=True)
                 output += tag_close
