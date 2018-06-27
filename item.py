@@ -4,7 +4,10 @@ A representation of an item in DSpace.
 An item has a collection of files (aka Bitstreams) and a number of metadata name value pairs. 
 """
 
-import os, html, re
+import os
+import re
+import html
+
 
 class Item:
     def __init__(self):
