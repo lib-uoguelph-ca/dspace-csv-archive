@@ -25,7 +25,7 @@ An Example:
 		<th>dc.type</th>
 	</tr>
 	<tr>
-		<td>something1.pdf; something_else1.pdf</td>
+		<td>something1.pdf||something_else1.pdf</td>
 		<td>title 1</td>
 		<td>author 1</td>
 		<td>subject 1</td>
@@ -34,7 +34,7 @@ An Example:
 	<tr>
 		<td>directory/something2.pdf</td>
 		<td>"title 2, with comma"</td>
-		<td>author 2a; author 2b</td>
+		<td>author 2a||author 2b</td>
 		<td>subject 2</td>
 		<td>Article</td>
 	</tr>
