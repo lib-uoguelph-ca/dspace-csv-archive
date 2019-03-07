@@ -11,7 +11,7 @@ Some simple rules:
 * Only dublin core metadata elements are supported (for now).
 * Use the fully qualified dublin core name for each element (eg dc.contributor.author).
 * Languages can be specified by leaving a space after the element name and then listing the language.
-* Separate multiple values for an element by semi-colons (;).
+* Separate multiple values for an element by double-pipes (||).
 * If your metadata value has a comma in it, put some quotes around it. Eg: "Roses are red, violets are blue".
 
 An Example: 

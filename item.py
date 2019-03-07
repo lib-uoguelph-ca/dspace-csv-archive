@@ -49,7 +49,7 @@ class Item:
     """
     def getFiles(self):
         values = []
-        files = self.files.split(';')
+        files = self.files.split('||')
         for index, file_name in enumerate(files):
             file = os.path.basename(file_name).strip()
             values.append(file)
