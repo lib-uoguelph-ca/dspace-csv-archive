@@ -10,9 +10,10 @@ import html
 
 
 class Item:
-    delimeter = '||'
+    delimiter = '||'
 
-    def __init__(self):
+    def __init__(self, delimiter = '||'):
+        self.delimiter = delimiter
         self._attributes = {}
         self.files = ""
 
@@ -35,8 +36,6 @@ class Item:
     Get an attribute value. 
     """
     def getAttribute(self, attribute):
-        value = self._attributes[attribute]
-        value
         return self._attributes[attribute]
 
     """
@@ -51,7 +50,7 @@ class Item:
     """
     def getFiles(self):
         values = []
-        files = self.files.split(self.delimeter)
+        files = self.files.split(self.delimiter)
         for index, file_name in enumerate(files):
             file = os.path.basename(file_name).strip()
             values.append(file)
@@ -63,7 +62,7 @@ class Item:
     """
     def getFilePaths(self):
         values = []
-        files = self.files.split(self.delimeter)
+        files = self.files.split(self.delimiter)
         for index, file_name in enumerate(files):
             file = file_name.strip()
             values.append(file)
@@ -79,7 +78,7 @@ class Item:
             tag_open = self.getOpenAttributeTag(index)
             tag_close = "</dcvalue>" + os.linesep
 
-            values = value.split(self.delimeter)
+            values = value.split(self.delimiter)
 
             for val in values:
                 if not val:
