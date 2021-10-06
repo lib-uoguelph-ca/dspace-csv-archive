@@ -22,7 +22,7 @@ class DspaceArchive:
         self.input_path = input_path
         self.input_base_path = os.path.dirname(input_path)
 
-        with open(self.input_path, 'r') as f:
+        with open(self.input_path, 'r', encoding="utf-8-sig") as f:
             reader = csv.reader(f)
 
             header = next(reader)
