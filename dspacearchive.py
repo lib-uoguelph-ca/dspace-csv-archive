@@ -8,6 +8,7 @@ Simple Archive format.
 import os, csv
 from itemfactory import ItemFactory
 from shutil import copy
+import unicodedata
 
 class DspaceArchive:
 
@@ -89,7 +90,7 @@ class DspaceArchive:
 
         files = item.getFiles()
         for index, file_name in enumerate(files):
-            contents_file.write(file_name)
+            contents_file.write(self.normalizeUnicode(file_name))
             if index < len(files):
                 contents_file.write(b"\n")
 
@@ -102,7 +103,8 @@ class DspaceArchive:
         files = item.getFilePaths()
         for index, file_name in enumerate(files):
             source_path = os.path.join(self.input_base_path, file_name)
-            copy(source_path.decode(), item_path.decode())
+            dest_path = os.path.join(item_path, file_name)
+            copy(source_path.decode(), self.normalizeUnicode(dest_path).decode())
 
     def writeMetadata(self, item, item_path):
         xml = item.toXML()
@@ -110,3 +112,17 @@ class DspaceArchive:
         metadata_file = open(os.path.join(item_path, b'dublin_core.xml'), "wb")
         metadata_file.write(xml)
         metadata_file.close()
+
+def normalizeUnicode(self, str):
+    """
+    Normalizes a Unicode string by replacing letters that are followed by a combining character with single characters.
+
+    Args:
+        str (str): The Unicode string to be normalized.
+
+    Returns:
+        str: The normalized string encoded as UTF-8.
+
+    """
+    cleaned = unicodedata.normalize(u'NFD', str.decode())
+    return cleaned.encode('utf-8')
