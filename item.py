@@ -6,16 +6,15 @@ An item has a collection of files (aka Bitstreams) and a number of metadata name
 
 import os
 import re
-import html
 
 
 class Item:
     delimiter = '||'
 
-    def __init__(self, delimiter = '||'):
+    def __init__(self, delimiter = b'||'):
         self.delimiter = delimiter
         self._attributes = {}
-        self.files = ""
+        self.files = b""
 
     """
     Get a dict of all attributes.
@@ -28,9 +27,9 @@ class Item:
     """
     def setAttribute(self, attribute, value):
         if attribute == "files":
-            self.files = value
+            self.files = value.encode('utf-8')
         else:
-            self._attributes[attribute] = value
+            self._attributes[attribute] = value.encode('utf-8')
 
     """
     Get an attribute value. 
@@ -72,11 +71,11 @@ class Item:
     Returns an XML represenatation of the item.
     """
     def toXML(self):
-        output = ""
-        output += "<dublin_core>" + os.linesep
+        output = b""
+        output += b"<dublin_core>" + os.linesep.encode('utf-8')
         for index, value in self.getAttributes().items():
             tag_open = self.getOpenAttributeTag(index)
-            tag_close = "</dcvalue>" + os.linesep
+            tag_close = b"</dcvalue>" + os.linesep.encode('utf-8')
 
             values = value.split(self.delimiter)
 
@@ -85,9 +84,9 @@ class Item:
                     continue
 
                 output += tag_open
-                output += html.escape(val.strip(), quote=True)
+                output += self.escape(val.strip())
                 output += tag_close
-        output += "</dublin_core>" + os.linesep
+        output += b"</dublin_core>" + os.linesep.encode('utf-8')
 
         return output
 
@@ -99,7 +98,7 @@ class Item:
         element = self.getAttributeElementString(attribute)
         qualifier = self.getAttributeQualifierString(attribute)
 
-        tag_open = '<dcvalue%s%s%s>' % (element, qualifier, lang)
+        tag_open = b'<dcvalue%s%s%s>' % (element, qualifier, lang)
 
         return tag_open
 
@@ -108,12 +107,12 @@ class Item:
     eg 'language="en"'
     """
     def getAttributeLangString(self, attribute):
-        match = re.search('_(\w+)', attribute)
+        match = re.search('_(\\w+)', attribute)
 
         if match != None:
-            return ' language="' + html.escape(match.group(1), quote=True) + '" '
+            return b' language="' + self.escape(match.group(1)) + b'" '
         else:
-            return ''
+            return b''
 
     """
     Strip the language bit off of a metadata attribute.
@@ -131,9 +130,9 @@ class Item:
         attribs = attribute.split('.')
 
         if len(attribs) >= 2:
-            return ' element="' + html.escape(attribs[1], quote=True) + '" '
+            return b' element="' + self.escape(attribs[1].encode('utf-8')) + b'" '
         else:
-            return ''
+            return b''
 
     """
     Get a string the key value pair for the qualifier attribute.
@@ -144,6 +143,25 @@ class Item:
         attribs = attribute.split('.')
 
         if len(attribs) >= 3:
-            return ' qualifier="' + html.escape(attribs[2], quote=True) + '" '
+            return b' qualifier="' + self.escape(attribs[2].encode('utf-8')) + b'" '
         else:
-            return ''
+            return b''
+        
+    """
+    The html.escape function doesn't support unicode strings, so I've just stolen it, 
+    made some slight tweaks, and included it here.
+    """
+    def escape(self, s, quote=False):
+        """
+        Replace special characters "&", "<" and ">" to HTML-safe sequences.
+        If the optional flag quote is true (the default), the quotation mark
+        characters, both double quote (") and single quote (') characters are also
+        translated.
+        """
+        s = s.replace(b"&", b"&amp;") # Must be done first!
+        s = s.replace(b"<", b"&lt;")
+        s = s.replace(b">", b"&gt;")
+        if quote:
+            s = s.replace(b'"', b"&qubot;")
+            s = s.replace(b'\'', b"&#x27;")
+        return s

@@ -12,5 +12,5 @@ input_file = sys.argv[1]
 input_base_path = os.path.dirname(input_file)
 
 archive = DspaceArchive(input_file)
-archive.write("./output")
+archive.write(b"./output")
 

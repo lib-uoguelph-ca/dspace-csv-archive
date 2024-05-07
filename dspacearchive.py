@@ -19,8 +19,8 @@ class DspaceArchive:
     """
     def __init__(self, input_path):
         self.items = []
-        self.input_path = input_path
-        self.input_base_path = os.path.dirname(input_path)
+        self.input_path = input_path.encode('utf-8')
+        self.input_base_path = os.path.dirname(input_path).encode('utf-8')
 
         with open(self.input_path, 'r', encoding="utf-8-sig") as f:
             reader = csv.reader(f)
@@ -55,7 +55,7 @@ class DspaceArchive:
         for index, item in enumerate(self.items):
 
             #item directory
-            name = "item_%03d" % (int(index) + 1)
+            name = b"item_%03d" % (int(index) + 1)
             item_path = os.path.join(dir, name)
             self.create_directory(item_path)
 
@@ -85,13 +85,13 @@ class DspaceArchive:
     Create a contents file that contains a lits of bitstreams, one per line. 
     """
     def writeContentsFile(self, item, item_path):
-        contents_file = open(os.path.join(item_path, 'contents'), "w")
+        contents_file = open(os.path.join(item_path, b'contents'), "wb")
 
         files = item.getFiles()
         for index, file_name in enumerate(files):
             contents_file.write(file_name)
             if index < len(files):
-                contents_file.write("\n")
+                contents_file.write(b"\n")
 
         contents_file.close()
 
@@ -101,11 +101,12 @@ class DspaceArchive:
     def copyFiles(self, item, item_path):
         files = item.getFilePaths()
         for index, file_name in enumerate(files):
-            copy(os.path.join(self.input_base_path, file_name), item_path)
+            source_path = os.path.join(self.input_base_path, file_name)
+            copy(source_path.decode(), item_path.decode())
 
     def writeMetadata(self, item, item_path):
         xml = item.toXML()
 
-        metadata_file = open(os.path.join(item_path, 'dublin_core.xml'), "w")
+        metadata_file = open(os.path.join(item_path, b'dublin_core.xml'), "wb")
         metadata_file.write(xml)
         metadata_file.close()
