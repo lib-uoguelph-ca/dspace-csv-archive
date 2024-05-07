@@ -113,16 +113,16 @@ class DspaceArchive:
         metadata_file.write(xml)
         metadata_file.close()
 
-def normalizeUnicode(self, str):
-    """
-    Normalizes a Unicode string by replacing letters that are followed by a combining character with single characters.
+    def normalizeUnicode(self, str):
+        """
+        Normalizes a Unicode string by replacing unicode characters with ascii equivalents.
 
-    Args:
-        str (str): The Unicode string to be normalized.
+        Args:
+            str (str): The Unicode string to be normalized.
 
-    Returns:
-        str: The normalized string encoded as UTF-8.
+        Returns:
+            str: The normalized string encoded as UTF-8.
 
-    """
-    cleaned = unicodedata.normalize(u'NFD', str.decode())
-    return cleaned.encode('utf-8')
+        """
+        cleaned = unicodedata.normalize(u'NFD', str.decode()).encode('ascii', 'ignore')
+        return cleaned.decode().encode('utf-8')
