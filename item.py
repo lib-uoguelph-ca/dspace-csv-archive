@@ -103,7 +103,7 @@ class Item:
         return tag_open
 
     """
-    Get a string the key value pair for the lang attribute.
+    Get a string for the key value pair for the lang attribute.
     eg 'language="en"'
     """
     def getAttributeLangString(self, attribute):
