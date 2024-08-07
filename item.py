@@ -26,7 +26,7 @@ class Item:
     Set an attribute value.
     """
     def setAttribute(self, attribute, value):
-        if attribute == "files":
+        if attribute == b"files":
             self.files = value.encode('utf-8')
         else:
             self._attributes[attribute] = value.encode('utf-8')
@@ -107,7 +107,7 @@ class Item:
     eg 'language="en"'
     """
     def getAttributeLangString(self, attribute):
-        match = re.search('_(\\w+)', attribute)
+        match = re.search(b'_(\\w+)', attribute)
 
         if match != None:
             return b' language="' + self.escape(match.group(1)) + b'" '
@@ -118,7 +118,7 @@ class Item:
     Strip the language bit off of a metadata attribute.
     """
     def stripAttributeLang(self, attribute):
-        attribs = attribute.split('_')
+        attribs = attribute.split(b'_')
         return attribs[0]
 
     """
@@ -127,10 +127,10 @@ class Item:
     """
     def getAttributeElementString(self, attribute):
         attribute = self.stripAttributeLang(attribute)
-        attribs = attribute.split('.')
+        attribs = attribute.split(b'.')
 
         if len(attribs) >= 2:
-            return b' element="' + self.escape(attribs[1].encode('utf-8')) + b'" '
+            return b' element="' + self.escape(attribs[1]) + b'" '
         else:
             return b''
 
@@ -140,10 +140,10 @@ class Item:
     """
     def getAttributeQualifierString(self, attribute):
         attribute = self.stripAttributeLang(attribute)
-        attribs = attribute.split('.')
+        attribs = attribute.split(b'.')
 
         if len(attribs) >= 3:
-            return b' qualifier="' + self.escape(attribs[2].encode('utf-8')) + b'" '
+            return b' qualifier="' + self.escape(attribs[2]) + b'" '
         else:
             return b''
         

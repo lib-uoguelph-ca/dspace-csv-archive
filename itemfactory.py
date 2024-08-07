@@ -17,7 +17,7 @@ class ItemFactory:
 		item = Item()
 
 		for index, column in enumerate(self.header):
-			column = column.replace(' ', '_')
+			column = column.replace(' ', '_').encode('utf-8')
 			if values == None:
 				item.setAttribute(column, None)
 			else:
