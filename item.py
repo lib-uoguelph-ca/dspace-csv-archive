@@ -107,7 +107,7 @@ class Item:
     eg 'language="en"'
     """
     def getAttributeLangString(self, attribute):
-        match = re.search(b'_(\\w+)', attribute)
+        match = re.search(b'#lang#(\\w+)', attribute)
 
         if match != None:
             return b' language="' + self.escape(match.group(1)) + b'" '
@@ -118,7 +118,7 @@ class Item:
     Strip the language bit off of a metadata attribute.
     """
     def stripAttributeLang(self, attribute):
-        attribs = attribute.split(b'_')
+        attribs = attribute.split(b'#lang#')
         return attribs[0]
 
     """
