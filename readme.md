@@ -66,7 +66,7 @@ Now we are ready to use the `import` command that comes with DSpace. Be sure to 
 
 Before running the import, you can validate your import by running the same command above along with the validate argument. This will test the import without actually importing anything and report any issues:
 
-    [dspace]/bin/dspace import --add --valideate --eperson=[importer's email address] --collection=[collection handle] --source=[directory-name] --mapfile=[directory-name]/mapfile
+    [dspace]/bin/dspace import --add --validate --eperson=[importer's email address] --collection=[collection handle] --source=[directory-name] --mapfile=[directory-name]/mapfile
 
 Running the import command without the validate argument will add the items in the directory to the specified collection, and document the operations that were completed in the mapfile. If the import didn't work as you planned, you can use the mapfile to reverse the operations. 
 
