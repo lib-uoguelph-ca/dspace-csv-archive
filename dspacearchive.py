@@ -96,22 +96,56 @@ class DspaceArchive:
 
         contents_file.close()
 
-    """
-    Copy the files that are referenced by an item to the item directory in the DSPace simple archive. 
-    """
+
     def copyFiles(self, item, item_path):
+        """
+        Copy the files that are referenced by an item to the item directory in the DSPace simple archive. 
+        """
+
         files = item.getFilePaths()
         for index, file_name in enumerate(files):
             source_path = os.path.join(self.input_base_path, file_name)
             dest_path = os.path.join(item_path, file_name)
             copy(source_path.decode(), self.normalizeUnicode(dest_path).decode())
 
-    def writeMetadata(self, item, item_path):
-        xml = item.toXML()
+    def getMetadataSchemas(self): 
+        """
+        Get a list of the metadata prefixes used in the CSV file.
+        """
 
-        metadata_file = open(os.path.join(item_path, b'dublin_core.xml'), "wb")
-        metadata_file.write(xml)
-        metadata_file.close()
+        keys = self.items[0].getAttributes().keys()
+        
+        results = []
+        for key in keys:
+            s = key.split(b'.')[0]
+            if s and s not in results:
+                results.append(s)``
+
+        return results
+
+    def writeMetadata(self, item, item_path):
+        """ 
+        Write the metadata for an item to an XML file in the item directory.
+        This has to happen once for each metadata schema that's used in the file.
+        See: https://wiki.lyrasis.org/pages/viewpage.action?pageId=104566653
+        """
+
+        self.getMetadataSchemas()
+        schemas = self.getMetadataSchemas()
+
+        # For each schema, we create a separate metadata file.
+        for schema in schemas:
+            xml = item.toXML(schema)
+
+            # Default filename for Dublin Core is dublin_core.xml
+            # For other schemas, we use metadata_<schema>.xml
+            filename = b"dublin_core.xml"
+            if schema != 'dc':
+                filename = b"metadata_" + schema + b".xml"
+
+            metadata_file = open(os.path.join(item_path, filename), "wb")
+            metadata_file.write(xml)
+            metadata_file.close()
 
     def normalizeUnicode(self, str):
         """

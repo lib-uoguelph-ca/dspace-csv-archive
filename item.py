@@ -70,10 +70,20 @@ class Item:
     """
     Returns an XML represenatation of the item.
     """
-    def toXML(self):
+    def toXML(self, schema = 'dc'):
         output = b""
-        output += b"<dublin_core>" + os.linesep.encode('utf-8')
+
+        # For non DC schemas, we have to include the schema attribute in the dublin_core tag.
+        if schema != 'dc':
+            output += b"<dublin_core schema=\"" + schema + b"\">" + os.linesep.encode('utf-8')
+        else: 
+            output += b"<dublin_core>" + os.linesep.encode('utf-8')
+
         for index, value in self.getAttributes().items():
+            # Only add a value to the output if it matches the schema
+            if not index.startswith(schema):
+                continue
+
             tag_open = self.getOpenAttributeTag(index)
             tag_close = b"</dcvalue>" + os.linesep.encode('utf-8')
 
