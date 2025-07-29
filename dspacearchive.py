@@ -140,7 +140,7 @@ class DspaceArchive:
             # Default filename for Dublin Core is dublin_core.xml
             # For other schemas, we use metadata_<schema>.xml
             filename = b"dublin_core.xml"
-            if schema != 'dc':
+            if schema != b'dc':
                 filename = b"metadata_" + schema + b".xml"
 
             metadata_file = open(os.path.join(item_path, filename), "wb")

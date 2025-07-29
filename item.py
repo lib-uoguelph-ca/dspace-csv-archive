@@ -74,7 +74,7 @@ class Item:
         output = b""
 
         # For non DC schemas, we have to include the schema attribute in the dublin_core tag.
-        if schema != 'dc':
+        if schema != b'dc':
             output += b"<dublin_core schema=\"" + schema + b"\">" + os.linesep.encode('utf-8')
         else: 
             output += b"<dublin_core>" + os.linesep.encode('utf-8')
