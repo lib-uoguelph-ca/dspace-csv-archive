@@ -119,7 +119,7 @@ class DspaceArchive:
         for key in keys:
             s = key.split(b'.')[0]
             if s and s not in results:
-                results.append(s)``
+                results.append(s)
 
         return results
 
